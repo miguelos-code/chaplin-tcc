@@ -1,0 +1,118 @@
+{% extends "shared/base_dashboard.html" %}
+{% block title %}Editar Usuário - Chaplin Admin{% endblock %}
+
+{% block content %}
+<div class="p-6 md:p-8 max-w-4xl mx-auto">
+    
+    <div class="flex items-center gap-4 mb-8">
+        <a href="{% url 'users:admin_users_list' %}" class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg p-2 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        </a>
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Editar Usuário</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">Alterando dados para: {{ target_user.get_full_name|default:target_user.username }}</p>
+        </div>
+    </div>
+
+    
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <form method="POST" id="editUserForm">
+            {% csrf_token %}
+            <input type="hidden" id="currentRole" value="{{ target_user.profile.role }}">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                
+                <div class="col-span-1 md:col-span-2 bg-orange-50 dark:bg-orange-900/20 p-6 rounded-lg border border-orange-100 dark:border-orange-800 mb-2">
+                    <h3 class="text-lg font-bold text-orange-800 dark:text-orange-400 mb-4 border-b border-orange-200 dark:border-orange-700 pb-2">Nível de Acesso (Papel do Sistema)</h3>
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Selecione o Nível</label>
+                        <select id="role" name="role" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white">
+                            {% for value, label in roles %}
+                                <option value="{{ value }}" {% if target_user.profile.role == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <p class="text-xs text-orange-600 dark:text-orange-400 mt-2 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                            Qualquer alteração neste campo ficará registrada na tabela de Auditoria.
+                        </p>
+                    </div>
+                </div>
+
+                
+                <div>
+                    <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nome</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ target_user.first_name }}" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white">
+                </div>
+                <div>
+                    <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sobrenome</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ target_user.last_name }}" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white">
+                </div>
+                <div class="md:col-span-2">
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                    <input type="email" id="email" name="email" value="{{ target_user.email }}" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white">
+                </div>
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Telefone (Opcional)</label>
+                    <input type="text" id="phone" name="phone" value="{{ target_user.profile.phone }}" placeholder="(00) 00000-0000" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white mask-phone">
+                </div>
+                <div>
+                    <label for="cpf" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CPF (Opcional)</label>
+                    <input type="text" id="cpf" name="cpf" value="{{ target_user.profile.cpf }}" placeholder="000.000.000-00" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white mask-cpf">
+                </div>
+                <div>
+                    <label for="cnpj" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CNPJ (Opcional)</label>
+                    <input type="text" id="cnpj" name="cnpj" value="{{ target_user.profile.cnpj }}" placeholder="00.000.000/0000-00" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white mask-cnpj">
+                </div>
+
+                
+                <div class="md:col-span-2">
+                    <label for="especialidade" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Especialidade (Opcional)</label>
+                    <select id="especialidade" name="especialidade" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white">
+                        <option value="">Sem especialidade específica</option>
+                        {% for esp in especialidades %}
+                            <option value="{{ esp.id }}" {% if target_user.profile.especialidade.id == esp.id %}selected{% endif %}>{{ esp.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-4">
+                <a href="{% url 'users:admin_users_list' %}" class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 px-6 py-2 rounded-lg font-medium transition">Cancelar</a>
+                <button type="button" id="submitBtn" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium shadow-sm transition">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('submitBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const form = document.getElementById('editUserForm');
+        const selectRole = document.getElementById('role').value;
+        const currentRole = document.getElementById('currentRole').value;
+        const roleSelectText = document.getElementById('role').options[document.getElementById('role').selectedIndex].text;
+
+        if (selectRole !== currentRole) {
+            Swal.fire({
+                title: 'Alteração de Nível',
+                text: `Tem certeza que deseja alterar o papel deste usuário para "${roleSelectText}"? Esta ação será auditada.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f97316',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sim, alterar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        } else {
+            form.submit();
+        }
+    });
+</script>
+{% endblock %}

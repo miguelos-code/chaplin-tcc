@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justificativa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 80px; /* não alterar: consistência do título */
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        
+        .divider {
+            width: 120px;
+            height: 8px;
+            background: #FF3D00;
+            margin-bottom: 30px;
+        }
+        
+        /* REFRESH LAYOUT: conteúdo em duas colunas para reduzir a altura total */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 40px; /* espaço vertical e horizontal entre seções */
+        }
+        
+        .section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #000000;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #FF3D00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 40px; /* mantém legibilidade sem alterar fonte */
+            font-size: 14px;
+            color: #1F1F1F;
+            line-height: 1.6;
+        }
+        
+        .section-content li {
+            margin-left: 0;
+            list-style: none;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .section-content li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #2962FF;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .single-column {
+            grid-template-columns: 1fr;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Justificativa</h1>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-title">Oportunidade de Mercado</div>
+                <ul class="section-content single-column">
+                    <li>Mercado de manutenção no Brasil: R$ 50+ bilhões/ano</li>
+                    <li>70% das buscas ainda são feitas manualmente</li>
+                    <li>Crescimento de plataformas de serviços (Uber, 99, iFood)</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Benefícios para Clientes</div>
+                <ul class="section-content">
+                    <li>Acesso a profissionais verificados e avaliados</li>
+                    <li>Comparação de preços em um único lugar</li>
+                    <li>Comunicação segura e integrada</li>
+                    <li>Pagamento seguro com proteção</li>
+                    <li>Histórico completo de serviços</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Benefícios para Profissionais</div>
+                <ul class="section-content">
+                    <li>Acesso a oportunidades de trabalho</li>
+                    <li>Construção de reputação e portfólio</li>
+                    <li>Recebimento seguro sem intermediários</li>
+                    <li>Ferramentas de comunicação profissional</li>
+                    <li>Crescimento de base de clientes</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Benefícios para Plataforma</div>
+                <ul class="section-content single-column">
+                    <li>Modelo de negócio sustentável (comissão 10%) • Escalabilidade horizontal • Potencial de expansão</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaplin - Plataforma de Tarefas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="bg-white text-gray-900">
+    
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-2xl font-bold text-orange-500">Chaplin</a>
+                </div>
+
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="{% url 'core:index' %}" class="text-gray-700 hover:text-orange-500 transition">Home</a>
+                    <a href="{% url 'users:login' %}" class="text-gray-700 hover:text-orange-500 transition">Login</a>
+                </div>
+
+                
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-orange-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <a href="{% url 'core:index' %}" class="block px-2 py-2 text-gray-700 hover:text-orange-500">Home</a>
+                <a href="{% url 'users:login' %}" class="block px-2 py-2 text-gray-700 hover:text-orange-500">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    
+    <section class="relative bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 text-white py-24 md:py-40 overflow-hidden">
+        
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <span class="inline-block bg-white text-orange-600 px-4 py-2 rounded-full text-sm font-semibold">Solução Inteligente</span>
+                        <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+                            Gestão de Tarefas Simplificada
+                        </h1>
+                    </div>
+                    <p class="text-xl text-orange-100 leading-relaxed">
+                        Centralize a comunicação, organize tarefas e acompanhe o progresso de manutenção com uma plataforma intuitiva e poderosa.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="{% url 'users:login' %}" class="inline-block bg-white text-orange-600 hover:bg-gray-100 font-bold py-4 px-8 rounded-lg transition transform hover:scale-105 shadow-lg text-center">
+                            Começar Agora
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-6 pt-8 border-t border-orange-400">
+                        <div>
+                            <p class="text-3xl font-bold">100+</p>
+                            <p class="text-orange-100 text-sm">Empresas</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold">10K+</p>
+                            <p class="text-orange-100 text-sm">Tarefas</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold">99%</p>
+                            <p class="text-orange-100 text-sm">Satisfação</p>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="hidden md:flex items-center justify-center">
+                    <div class="relative w-full h-full">
+                        <div class="absolute inset-0 bg-white opacity-10 rounded-3xl transform rotate-3"></div>
+                        <img src="{% static 'img/ChatGPT Image 8 de jun. de 2026, 22_08_44.png' %}" alt="Hero" class="rounded-3xl shadow-2xl relative z-10 transform -rotate-3 hover:rotate-0 transition duration-300">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="sobre" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Sobre Nós</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <p class="text-gray-700 text-lg mb-6">
+                        O Chaplin é uma plataforma completa desenvolvida especificamente para resolver os desafios do gerenciamento de tarefas de manutenção predial. Esqueça sistemas complexos e planilhas confusas.
+                    </p>
+                    <p class="text-gray-700 text-lg">
+                        Nosso sistema oferece um fluxo de trabalho claro e direto: gestores criam e atribuem ordens de serviço, enquanto membros da equipe técnica executam, reportam o tempo gasto e adicionam evidências fotográficas em tempo real. Tudo isso com um sistema de controle de acesso (RBAC) robusto que garante que cada usuário veja apenas o que é pertinente à sua função.
+                    </p>
+                </div>
+                <div>
+                    <img src="{% static 'img/grupo.jpeg' %}" alt="About" class="rounded-lg shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="servicos" class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Nossos Serviços</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.5 1.5H3.75A2.25 2.25 0 001.5 3.75v12.5A2.25 2.25 0 003.75 18.5h12.5a2.25 2.25 0 002.25-2.25V9.5m-15-4h12m-12 4v8m12-8v8m-12-8h12"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Gerenciamento de Tarefas</h3>
+                    <p class="text-gray-600">Organize e acompanhe todas as suas tarefas em um único lugar com facilidade.</p>
+                </div>
+
+                
+                <div class="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Colaboração em Equipe</h3>
+                    <p class="text-gray-600">Trabalhe em conjunto com sua equipe de forma sincronizada e eficiente.</p>
+                </div>
+
+                
+                <div class="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000 2H3a1 1 0 00-1 1v12a1 1 0 001 1h14a1 1 0 001-1V6a1 1 0 00-1-1h-3a1 1 0 000-2 2 2 0 00-2-2H4zm9.6 5.2a1 1 0 00-1.4-1.4L9 10.6 7.4 9a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4.2-4.2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Acompanhamento de Progresso</h3>
+                    <p class="text-gray-600">Visualize o progresso de seus projetos com relatórios detalhados.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="bg-orange-500 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Pronto para começar?</h2>
+            <p class="text-lg mb-8">Junte-se a milhares de usuários que já estão gerenciando suas tarefas com Chaplin.</p>
+            <a href="{% url 'users:login' %}" class="inline-block bg-white text-orange-500 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition">
+                Fazer Login
+            </a>
+        </div>
+    </section>
+
+
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

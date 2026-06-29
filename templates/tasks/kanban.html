@@ -1,0 +1,53 @@
+{% extends "shared/base_dashboard.html" %}
+{% load static %}
+
+{% block title %}Kanban - Chaplin{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Quadro Kanban</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-1">Visualize suas tarefas por status</p>
+        </div>
+        
+        <div class="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-1">
+            <a href="{% url 'tasks:list' %}" class="flex items-center gap-2 px-4 py-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition text-sm font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                Lista
+            </a>
+            <a href="{% url 'tasks:kanban' %}" class="flex items-center gap-2 px-4 py-2 rounded-md bg-orange-500 text-white transition text-sm font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path></svg>
+                Kanban
+            </a>
+
+        </div>
+    </div>
+
+    
+    <div id="kanban-board-container">
+        {% include "tasks/_kanban_board.html" %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const boardContainer = document.getElementById('kanban-board-container');
+        if (boardContainer) {
+            setInterval(() => {
+                fetch('{% url "tasks:kanban" %}?ajax=1', {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(res => res.text())
+                .then(html => {
+                    boardContainer.innerHTML = html;
+                })
+                .catch(err => console.error('Erro ao atualizar kanban:', err));
+            }, 5000); // 5 segundos
+        }
+    });
+</script>
+{% endblock %}

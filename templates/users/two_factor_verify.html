@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação em Dois Fatores - Chaplin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <script>
+        (function() {
+            const t = localStorage.getItem('chaplin-theme');
+            if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-md">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-orange-500">Chaplin</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">Autenticação em Dois Fatores</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-8">
+            
+            <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/40 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+            </div>
+
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-1">Verificação de Segurança</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">
+                Olá, <span class="font-semibold text-gray-700 dark:text-gray-300">{{ username }}</span>.<br>
+                Insira o código do seu autenticador para continuar.
+            </p>
+
+            {% if error %}
+            <div class="bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 p-3 rounded-lg text-sm text-red-700 dark:text-red-300 mb-4">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="code" maxlength="6" inputmode="numeric" autocomplete="one-time-code" autofocus
+                        placeholder="● ● ● ● ● ●"
+                        class="w-full px-4 py-4 text-center text-3xl font-mono border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 tracking-[0.5em]">
+                </div>
+                <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl transition text-sm">
+                    Verificar e Entrar
+                </button>
+            </form>
+
+            <a href="{% url 'users:login' %}" class="block text-center text-xs text-gray-400 hover:text-orange-500 mt-4 transition">
+                ← Voltar para o Login
+            </a>
+        </div>
+    </div>
+</body>
+</html>

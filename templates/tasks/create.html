@@ -1,0 +1,160 @@
+{% extends "shared/base_dashboard.html" %}
+{% load static %}
+
+{% block title %}Nova Tarefa - Chaplin{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    
+    <div class="mb-8">
+        <a href="{% url 'tasks:list' %}" class="text-orange-500 hover:text-orange-600 font-medium text-sm inline-flex items-center gap-1 mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            Voltar
+        </a>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Criar Nova Tarefa</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Preencha os detalhes da nova tarefa abaixo</p>
+    </div>
+
+    <form method="POST" action="{% url 'tasks:create' %}" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg text-sm text-red-700">
+            Verifique os campos abaixo e corrija os erros indicados.
+        </div>
+        {% endif %}
+
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-5">
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-3">Informações da Tarefa</h2>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Título <span class="text-red-500">*</span></label>
+                {{ form.title }}
+                {% if form.title.errors %}<p class="text-red-500 text-xs mt-1">{{ form.title.errors.0 }}</p>{% endif %}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Descrição</label>
+                {{ form.description }}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Foto do Ambiente (Opcional)</label>
+                {{ form.photo }}
+                <p class="text-xs text-gray-400 mt-1">Anexe uma imagem para mostrar o estado atual do ambiente.</p>
+                {% if form.photo.errors %}<p class="text-red-500 text-xs mt-1">{{ form.photo.errors.0 }}</p>{% endif %}
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Prioridade</label>
+                    {{ form.priority }}
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Data de Vencimento</label>
+                    {{ form.due_date }}
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-5">
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-3">Localização</h2>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Local / Setor (Interno)</label>
+                {{ form.location }}
+                <p class="text-xs text-gray-400 mt-1">Ex: Sala 302, Corredor B, Telhado — opcional se for informar o endereço completo</p>
+            </div>
+
+            
+            <div class="border-t border-dashed border-gray-200 dark:border-gray-700 pt-5">
+                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Endereço Completo</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CEP</label>
+                        {{ form.cep }}
+                        <p id="cep-error" class="hidden text-red-500 text-xs mt-1">CEP não encontrado.</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Logradouro</label>
+                        {{ form.logradouro }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Número</label>
+                        {{ form.numero }}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Complemento</label>
+                        {{ form.complemento }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bairro</label>
+                        {{ form.bairro }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cidade</label>
+                        {{ form.cidade }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estado (UF)</label>
+                        {{ form.estado }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button type="submit" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition">
+                Criar Tarefa
+            </button>
+            <a href="{% url 'tasks:list' %}" class="flex-1 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold py-3 px-6 rounded-lg transition text-center">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    const cepInput = document.getElementById('task_cep');
+
+    function formatCep(value) {
+        return value.replace(/\D/g, '').replace(/^(\d{5})(\d)/, '$1-$2').substring(0, 9);
+    }
+
+    cepInput.addEventListener('input', function () {
+        this.value = formatCep(this.value);
+        const cep = this.value.replace(/\D/g, '');
+        const errEl = document.getElementById('cep-error');
+        if (cep.length === 8) {
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.erro) {
+                        errEl.classList.remove('hidden');
+                        return;
+                    }
+                    errEl.classList.add('hidden');
+                    document.getElementById('task_logradouro').value = data.logradouro || '';
+                    document.getElementById('task_bairro').value = data.bairro || '';
+                    document.getElementById('task_cidade').value = data.localidade || '';
+                    document.getElementById('task_estado').value = data.uf || '';
+                    document.getElementById('task_numero').focus();
+                })
+                .catch(() => errEl.classList.remove('hidden'));
+        } else {
+            errEl.classList.add('hidden');
+        }
+    });
+</script>
+{% endblock %}

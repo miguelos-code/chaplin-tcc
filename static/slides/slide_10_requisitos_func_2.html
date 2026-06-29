@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requisitos Funcionais - Parte 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 80px; /* manter padding superior do título */
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 40px; /* manter consistência abaixo do cabeçalho */
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        
+        /* Subtítulo removido para reduzir a altura total sem afetar o título */
+        
+        .divider {
+            width: 120px;
+            height: 8px;
+            background: #FF3D00;
+            margin-bottom: 30px;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px; /* reduzir gap para diminuir a altura total */
+            flex: 1;
+        }
+        
+        .category {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* reduzir espaçamento interno entre header/list/count */
+            padding-bottom: 12px; /* menor padding inferior nas categorias da primeira linha */
+            border-bottom: 2px solid #000000; /* borda mais fina para economizar altura */
+        }
+        
+        .category:nth-child(3),
+        .category:nth-child(4) {
+            border-bottom: none;
+            padding-bottom: 0; /* segunda linha sem padding extra */
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .category-number {
+            font-size: 32px; /* manter tamanho de fonte */
+            font-weight: 700;
+            color: #FFFFFF;
+            background: #FF3D00;
+            width: 40px; /* reduzir bloco para diminuir altura do header */
+            height: 40px;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 2px solid #000000;
+        }
+        
+        .category-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000000;
+            line-height: 1.25; /* linha mais justa sem alterar tamanho de fonte */
+            padding-top: 0; /* remover padding extra no título da categoria */
+        }
+        
+        .category-list {
+            margin-left: 65px;
+            font-size: 13px;
+            color: #1F1F1F;
+            line-height: 1.4; /* reduzir linha para compactar a lista */
+            list-style: none;
+        }
+        
+        .category-list li {
+            margin-bottom: 3px; /* menor espaçamento entre itens */
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .category-list li:before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: #2962FF;
+            font-size: 12px;
+        }
+        
+        .category-count {
+            margin-left: 65px;
+            font-size: 12px;
+            color: #FF3D00;
+            font-weight: 700;
+            margin-top: 0; /* usar gap do container para separar da lista */
+            padding-top: 3px; /* reduzir padding superior */
+            border-top: 1px solid #FF3D00; /* borda mais fina */
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Requisitos Funcionais</h1>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="content">
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-number">5</div>
+                    <div class="category-title">Sistema de Propostas</div>
+                </div>
+                <ul class="category-list">
+                    <li>Fazer proposta</li>
+                    <li>Definir valor proposto</li>
+                    <li>Descrever solução</li>
+                    <li>Definir tempo estimado</li>
+                    <li>Impedir propostas duplicadas</li>
+                    <li>Notificar cliente</li>
+                    <li>Aceitar/rejeitar propostas</li>
+                </ul>
+                <div class="category-count">11 requisitos</div>
+            </div>
+            
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-number">6</div>
+                    <div class="category-title">Chat em Tempo Real</div>
+                </div>
+                <ul class="category-list">
+                    <li>Chat entre usuários</li>
+                    <li>Histórico de mensagens</li>
+                    <li>Marcar como lida</li>
+                    <li>Notificações</li>
+                    <li>Enviar fotos</li>
+                    <li>Status "digitando..."</li>
+                    <li>Deletar mensagem própria</li>
+                </ul>
+                <div class="category-count">8 requisitos</div>
+            </div>
+            
+            
+            
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-number">7</div>
+                    <div class="category-title">Processamento de Pagamentos</div>
+                </div>
+                <ul class="category-list">
+                    <li>Integração com Stripe</li>
+                    <li>Retenção de valor</li>
+                    <li>Transferência para profissional</li>
+                    <li>Cálculo de comissão (10%)</li>
+                    <li>Histórico de pagamentos</li>
+                    <li>Múltiplos métodos</li>
+                    <li>Recibos de pagamento</li>
+                </ul>
+                <div class="category-count">9 requisitos</div>
+            </div>
+            
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-number">8</div>
+                    <div class="category-title">Avaliações e Ratings</div>
+                </div>
+                <ul class="category-list">
+                    <li>Avaliar profissional/cliente</li>
+                    <li>Nota de 1 a 5 estrelas</li>
+                    <li>Comentários na avaliação</li>
+                    <li>Cálculo de rating médio</li>
+                    <li>Avaliações públicas</li>
+                    <li>Impedir avaliação duplicada</li>
+                    <li>Responder avaliação</li>
+                </ul>
+                <div class="category-count">8 requisitos</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

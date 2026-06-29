@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conclusão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 80px; /* manter o padding superior do título */
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        
+        .divider {
+            width: 120px;
+            height: 8px;
+            background: #FF3D00;
+            margin-bottom: 30px;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px; /* reduz o espaçamento entre linhas/colunas */
+            flex: 1;
+        }
+        
+        .section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* reduz espaço interno entre header e lista */
+            padding-bottom: 10px; /* reduz padding inferior */
+            border-bottom: 3px solid #000000; /* reduz espessura da borda inferior */
+        }
+        
+        .section:nth-child(3),
+        .section:nth-child(4) {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .section-icon {
+            font-size: 32px;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000000;
+            line-height: 1.3;
+            padding-top: 5px;
+        }
+        
+        .section-list {
+            margin-left: 65px;
+            font-size: 13px;
+            color: #1F1F1F;
+            line-height: 1.6; /* reduz a altura das linhas sem alterar o tamanho da fonte */
+            list-style: none;
+        }
+        
+        .section-list li {
+            margin-bottom: 6px; /* reduz espaçamento entre itens */
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .section-list li:last-child {
+            margin-bottom: 0; /* remove margem extra após o último item */
+        }
+        
+        .section-list li:before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: #2962FF;
+            font-size: 12px;
+        }
+        
+        .highlight {
+            color: #FF3D00;
+            font-weight: 700;
+        }
+        
+        .cta {
+            grid-column: 1 / -1;
+            margin-top: 10px; /* reduz espaço antes da CTA */
+            padding-top: 15px; /* reduz padding interno superior da CTA */
+            border-top: 3px solid #FF3D00; /* reduz espessura da borda */
+            text-align: center;
+        }
+        
+        .cta-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 8px; /* reduz espaço entre título e subtítulo da CTA */
+        }
+        
+        .cta-subtext {
+            font-size: 14px;
+            color: #1F1F1F;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Conclusão</h1>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">📋</div>
+                    <div class="section-title">Resumo do Projeto</div>
+                </div>
+                <ul class="section-list">
+                    <li>Plataforma de <span class="highlight">marketplace de serviços</span> de manutenção residencial, predial e hoteleira</li>
+                    <li>Conecta <span class="highlight">clientes com profissionais</span> de forma segura e eficiente</li>
+                    <li>Modelo de negócio sustentável com <span class="highlight">comissão 10%</span> por transação</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">⭐</div>
+                    <div class="section-title">Diferenciais Competitivos</div>
+                </div>
+                <ul class="section-list">
+                    <li>Verificação rigorosa de profissionais com certificações</li>
+                    <li>Sistema de avaliações transparente e confiável</li>
+                    <li>Chat integrado com histórico completo</li>
+                    <li>Pagamento seguro com proteção ao cliente</li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">📈</div>
+                    <div class="section-title">Impacto Esperado</div>
+                </div>
+                <ul class="section-list">
+                    <li><span class="highlight">1.000+ usuários</span> no primeiro ano</li>
+                    <li><span class="highlight">R$ 500k</span> em receita anual (meta conservadora)</li>
+                    <li><span class="highlight">95%</span> de satisfação do cliente</li>
+                    <li>Expansão para outras categorias de serviços</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">🚀</div>
+                    <div class="section-title">Próximos Passos</div>
+                </div>
+                <ul class="section-list">
+                    <li>Finalizar desenvolvimento do MVP (6-8 semanas)</li>
+                    <li>Testes com usuários beta em São Paulo</li>
+                    <li>Lançamento oficial e campanha de marketing</li>
+                </ul>
+            </div>
+            
+            <div class="cta">
+                <div class="cta-text">Chaplin: Conectando Profissionais e Clientes</div>
+                <div class="cta-subtext">Transformando o mercado de manutenção residencial, predial e hoteleira</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+{% extends "shared/base_dashboard.html" %}
+{% block title %}Novo Usuário - Chaplin Admin{% endblock %}
+
+{% block content %}
+<div class="p-8 max-w-4xl mx-auto">
+    
+    <div class="flex items-center gap-4 mb-8">
+        <a href="{% url 'users:admin_users_list' %}" class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg p-2 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        </a>
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Novo Usuário</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">Crie uma conta para um colaborador, líder ou gestor predial.</p>
+        </div>
+    </div>
+
+    
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-6 text-sm">
+                Por favor, corrija os erros abaixo.
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p class="mt-1">{{ field.label }}: {{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            
+            <div class="bg-orange-50 dark:bg-orange-900/20 p-6 rounded-lg border border-orange-100 dark:border-orange-800 mb-6">
+                <h3 class="text-lg font-bold text-orange-800 dark:text-orange-400 mb-4 border-b border-orange-200 dark:border-orange-700 pb-2">Nível de Acesso</h3>
+                <div>
+                    <label for="{{ form.role.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Selecione o Perfil</label>
+                    {{ form.role }}
+                    <p class="text-xs text-orange-600 dark:text-orange-400 mt-2 flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                        O nível define quais telas e ações o usuário poderá acessar no sistema.
+                    </p>
+                </div>
+            </div>
+
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nome</label>
+                    {{ form.first_name }}
+                </div>
+                <div>
+                    <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sobrenome</label>
+                    {{ form.last_name }}
+                </div>
+                <div>
+                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Usuário (Login)</label>
+                    {{ form.username }}
+                </div>
+                <div>
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">E-mail</label>
+                    {{ form.email }}
+                </div>
+                <div>
+                    <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Telefone (Opcional)</label>
+                    {{ form.phone }}
+                </div>
+                <div>
+                    <label for="{{ form.cpf.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CPF (Opcional)</label>
+                    {{ form.cpf }}
+                </div>
+                <div>
+                    <label for="{{ form.cnpj.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CNPJ (Opcional)</label>
+                    {{ form.cnpj }}
+                </div>
+                <div>
+                    <label for="especialidade" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Especialidade (Opcional)</label>
+                    <select id="especialidade" name="especialidade" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none dark:bg-gray-700 dark:text-white">
+                        <option value="">Sem especialidade</option>
+                        {% for esp in especialidades %}
+                            <option value="{{ esp.id }}">{{ esp.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Senha</label>
+                    {{ form.password }}
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Mínimo de 8 caracteres.</p>
+                </div>
+                <div>
+                    <label for="{{ form.password_confirm.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirmar Senha</label>
+                    {{ form.password_confirm }}
+                </div>
+            </div>
+
+            
+            <div class="pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-4">
+                <a href="{% url 'users:admin_users_list' %}" class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 px-6 py-2 rounded-lg font-medium transition">Cancelar</a>
+                <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium shadow-sm transition">Criar Usuário</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Caso de Uso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 80px; /* manter padding superior do título */
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 16px; /* reduz espaçamento abaixo do cabeçalho */
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 12px; /* reduz espaçamento interno mantendo legibilidade */
+        }
+        
+        .divider {
+            width: 120px;
+            height: 8px;
+            background: #FF3D00;
+            margin-bottom: 12px; /* reduz espaço após a linha */
+        }
+        
+        .diagram-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto; /* filas dimensionadas pelo conteúdo */
+            gap: 16px; /* reduz o gap geral para diminuir altura total */
+            position: relative;
+            min-height: 0; /* permite encolher conforme conteúdo */
+        }
+        
+        .actor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* reduz leve espaçamento interno */
+        }
+        
+        .actor-icon {
+            font-size: 48px;
+            line-height: 1;
+        }
+        
+        .actor-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #000000;
+            text-align: center;
+        }
+        
+        .actor-top-left { grid-column: 1; grid-row: 1; }
+        .actor-top-right { grid-column: 3; grid-row: 1; }
+        .actor-bottom-left { grid-column: 1; grid-row: 3; }
+        .actor-bottom-right { grid-column: 3; grid-row: 3; }
+        
+        .center-content {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px; /* reduz leve espaçamento interno */
+        }
+        
+        .use-cases-group {
+            display: grid; /* reorganiza em grade para reduzir altura vertical */
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 12px;
+            row-gap: 10px;
+            align-items: start;
+            justify-items: center;
+        }
+        
+        .use-case-box {
+            background: #F5F5F5;
+            border: 3px solid #000000;
+            padding: 10px 20px; /* reduz padding vertical mantendo legibilidade */
+            font-size: 14px;
+            font-weight: 700;
+            color: #000000;
+            text-align: center;
+            min-width: 160px; /* leve ajuste para caber em 2 colunas */
+        }
+        
+        .use-case-box.highlight {
+            background: #FF3D00;
+            color: #FFFFFF;
+        }
+        
+        .connection-line {
+            position: absolute;
+            background: #000000;
+            z-index: 0;
+        }
+        
+        .connection-horizontal {
+            height: 3px;
+            top: 50%;
+            left: 0;
+            right: 0;
+        }
+        
+        .connection-vertical {
+            width: 3px;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+        }
+        
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 16px; /* ligeiramente menor */
+            margin-top: 16px; /* reduz espaço acima da legenda */
+            padding-top: 12px; /* reduz padding superior */
+            border-top: 3px solid #000000; /* borda mais fina para compor altura */
+        }
+        
+        .legend-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px; /* reduz espaçamento entre ícone e texto */
+        }
+        
+        .legend-icon {
+            font-size: 32px;
+        }
+        
+        .legend-text {
+            font-size: 12px;
+            font-weight: 400;
+            color: #1F1F1F;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Diagrama de Caso de Uso</h1>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="diagram-container">
+            
+            <div class="connection-line connection-horizontal"></div>
+            <div class="connection-line connection-vertical"></div>
+            
+            
+            <div class="actor actor-top-left">
+                <div class="actor-icon">👤</div>
+                <div class="actor-name">Cliente</div>
+            </div>
+            
+            <div class="actor actor-top-right">
+                <div class="actor-icon">👷</div>
+                <div class="actor-name">Profissional</div>
+            </div>
+            
+            <div class="actor actor-bottom-left">
+                <div class="actor-icon">👨‍💼</div>
+                <div class="actor-name">Admin</div>
+            </div>
+            
+            <div class="actor actor-bottom-right">
+                <div class="actor-icon">🖥️</div>
+                <div class="actor-name">Sistema</div>
+            </div>
+            
+            
+            <div class="center-content">
+                <div class="use-cases-group">
+                    <div class="use-case-box highlight">Autenticação</div>
+                    <div class="use-case-box">Publicar Tarefa</div>
+                    <div class="use-case-box">Fazer Proposta</div>
+                    <div class="use-case-box">Chat</div>
+                    <div class="use-case-box">Pagamento</div>
+                    <div class="use-case-box">Avaliação</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-icon">👤</div>
+                <div class="legend-text">Publica tarefas</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon">👷</div>
+                <div class="legend-text">Faz propostas</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon">👨‍💼</div>
+                <div class="legend-text">Gerencia plataforma</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon">🖥️</div>
+                <div class="legend-text">Processa operações</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

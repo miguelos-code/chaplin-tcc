@@ -1,0 +1,255 @@
+{% extends "shared/base_dashboard.html" %}
+{% load static %}
+
+{% block title %}Configurações - Chaplin{% endblock %}
+
+{% block content %}
+<div class="p-6 md:p-8">
+    <div class="mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Configurações</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Personalize sua experiência e gerencie sua conta</p>
+    </div>
+
+    
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="lg:col-span-1">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700">
+                <nav class="space-y-2" id="settings-nav">
+                    <a href="#" onclick="showTab('profile-tab')" id="nav-profile-tab" class="settings-link flex items-center gap-3 px-4 py-3 bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 rounded-lg font-medium transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        Perfil do Usuário
+                    </a>
+                    <a href="#" onclick="showTab('security-tab')" id="nav-security-tab" class="settings-link flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg font-medium transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        Segurança
+                    </a>
+                </nav>
+            </div>
+
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-6 text-center border border-gray-200 dark:border-gray-700">
+                <div class="w-24 h-24 bg-orange-500 rounded-full flex items-center justify-center text-white text-4xl font-bold mx-auto mb-4 overflow-hidden">
+                    {% if user_profile.avatar %}
+                        <img src="{{ user_profile.avatar.url }}" alt="Avatar" class="w-full h-full object-cover">
+                    {% else %}
+                        {{ user.first_name|first|upper|default:"U" }}
+                    {% endif %}
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ user.first_name|default:user.username }}</h3>
+                <p class="text-sm font-medium text-orange-600 dark:text-orange-400 mt-1">{{ user_profile.get_role_display }}</p>
+                <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">{{ user.email }}</p>
+            </div>
+        </div>
+
+        
+        <div class="lg:col-span-2">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+                
+                
+                <div id="profile-tab" class="settings-tab block">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3 mb-6">Perfil do Usuário</h2>
+                    
+                    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Foto de Perfil (Avatar)</label>
+                            <input type="file" id="avatar" name="avatar" accept="image/*" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white bg-gray-50">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nome</label>
+                                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" maxlength="150" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" required>
+                            </div>
+                            <div>
+                                <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sobrenome</label>
+                                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" maxlength="150" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                <input type="email" id="email" name="email" value="{{ user.email }}" maxlength="254" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" required>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Telefone</label>
+                                <input type="tel" id="phone" name="phone" value="{{ user_profile.phone }}" placeholder="(00) 00000-0000" maxlength="20" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white mask-phone">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="cpf" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CPF (Opcional)</label>
+                                <input type="text" id="cpf" name="cpf" value="{{ user_profile.cpf }}" placeholder="000.000.000-00" maxlength="14" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white mask-cpf">
+                            </div>
+                            <div>
+                                <label for="cnpj" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CNPJ (Opcional)</label>
+                                <input type="text" id="cnpj" name="cnpj" value="{{ user_profile.cnpj }}" placeholder="00.000.000/0000-00" maxlength="18" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white mask-cnpj">
+                            </div>
+                        </div>
+
+                        {% if user_profile.role != 'admin' %}
+                        
+                        <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+                            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                Endereço Completo
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class="md:col-span-1">
+                                    <label for="cep" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CEP</label>
+                                    <input type="text" id="cep" name="cep" value="{{ user_profile.cep }}" placeholder="00000-000" maxlength="9" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white">
+                                    <p id="cep-error" class="hidden text-red-500 text-xs mt-1">CEP não encontrado.</p>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label for="logradouro" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Logradouro</label>
+                                    <input type="text" id="logradouro" name="logradouro" value="{{ user_profile.logradouro }}" maxlength="255" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class="md:col-span-1">
+                                    <label for="numero" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Número</label>
+                                    <input type="text" id="numero" name="numero" value="{{ user_profile.numero }}" maxlength="20" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label for="complemento" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Complemento</label>
+                                    <input type="text" id="complemento" name="complemento" value="{{ user_profile.complemento }}" placeholder="Apto, Bloco, etc." maxlength="100" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label for="bairro" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Bairro</label>
+                                    <input type="text" id="bairro" name="bairro" value="{{ user_profile.bairro }}" maxlength="100" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="cidade" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cidade</label>
+                                    <input type="text" id="cidade" name="cidade" value="{{ user_profile.cidade }}" maxlength="100" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="estado" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Estado</label>
+                                    <input type="text" id="estado" name="estado" value="{{ user_profile.estado }}" maxlength="2" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+                            <label for="bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Qualificações</label>
+                            <textarea id="bio" name="bio" rows="4" placeholder="Descreva suas habilidades e principais qualificações..." class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white">{{ user_profile.bio }}</textarea>
+                        </div>
+                        {% endif %}
+
+                        <div class="flex gap-4 pt-6 mt-4">
+                            <button type="submit" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-4 rounded-lg shadow-sm transition">
+                                Salvar Alterações
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                
+                <div id="security-tab" class="settings-tab hidden">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3 mb-6">Segurança e Acesso</h2>
+                    
+                    
+                    <div class="flex items-start gap-4 p-5 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 mb-6">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-green-100 dark:bg-green-900/40">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Conta Protegida</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Sua conta está protegida por autenticação segura com validação de senha e proteção contra tentativas abusivas de login.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                            <p class="text-sm text-gray-700 dark:text-gray-300"><strong>Usuário:</strong> {{ user.username }}</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                            <p class="text-sm text-gray-700 dark:text-gray-300"><strong>Último acesso:</strong> {{ user.last_login|date:"d/m/Y H:i"|default:"Nunca" }}</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                            <p class="text-sm text-gray-700 dark:text-gray-300"><strong>Nível de acesso:</strong> {{ user_profile.get_role_display }}</p>
+                        </div>
+                    </div>
+
+                    {% if user.is_superuser %}
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">Para alterar sua senha de segurança mestra, utilize o painel interno do servidor ou contate a equipe de infraestrutura.</p>
+                    {% else %}
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">Para alterar sua senha ou nível de acesso, entre em contato com a gestão predial.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showTab(targetId) {
+        document.querySelectorAll('.settings-tab').forEach(tab => {
+            tab.classList.remove('block');
+            tab.classList.add('hidden');
+        });
+        
+        document.querySelectorAll('.settings-link').forEach(link => {
+            link.className = 'settings-link flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg font-medium transition';
+        });
+        
+        document.getElementById(targetId).classList.remove('hidden');
+        document.getElementById(targetId).classList.add('block');
+        
+        const activeLink = document.getElementById('nav-' + targetId);
+        activeLink.className = 'settings-link flex items-center gap-3 px-4 py-3 bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 rounded-lg font-medium transition';
+    }
+
+    // ViaCEP
+    document.addEventListener('DOMContentLoaded', function() {
+        const cepInput = document.getElementById('cep');
+        const logradouroInput = document.getElementById('logradouro');
+        const bairroInput = document.getElementById('bairro');
+        const cidadeInput = document.getElementById('cidade');
+        const estadoInput = document.getElementById('estado');
+        const numeroInput = document.getElementById('numero');
+        const errorMsg = document.getElementById('cep-error');
+
+        if (cepInput) {
+            cepInput.addEventListener('blur', function() {
+                let cep = cepInput.value.replace(/\D/g, '');
+                if (cep.length === 8) {
+                    errorMsg.classList.add('hidden');
+                    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.erro) {
+                                errorMsg.classList.remove('hidden');
+                                errorMsg.innerText = "CEP não encontrado.";
+                            } else {
+                                logradouroInput.value = data.logradouro;
+                                bairroInput.value = data.bairro;
+                                cidadeInput.value = data.localidade;
+                                estadoInput.value = data.uf;
+                                numeroInput.focus();
+                            }
+                        })
+                        .catch(() => {
+                            errorMsg.classList.remove('hidden');
+                            errorMsg.innerText = "Erro ao conectar com servidor de CEP.";
+                        });
+                } else if (cep.length > 0) {
+                    errorMsg.classList.remove('hidden');
+                    errorMsg.innerText = "Digite um CEP válido com 8 números.";
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

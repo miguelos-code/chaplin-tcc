@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problemática</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 80px;
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 50px;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            font-weight: 400;
+            color: #1F1F1F;
+            margin-bottom: 20px;
+        }
+        
+        .divider {
+            width: 120px;
+            height: 8px;
+            background: #FF3D00;
+            margin-bottom: 40px;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+        }
+        
+        .problem {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-bottom: 30px;
+            border-bottom: 4px solid #000000;
+        }
+        
+        .problem-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .problem-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FF3D00;
+            min-width: 40px;
+        }
+        
+        .problem-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000000;
+            line-height: 1.3;
+        }
+        
+        .problem-description {
+            font-size: 14px;
+            font-weight: 400;
+            color: #1F1F1F;
+            line-height: 1.6;
+            margin-left: 55px;
+        }
+        
+        .problem-list {
+            margin-left: 55px;
+            font-size: 14px;
+            color: #1F1F1F;
+            line-height: 1.8;
+        }
+        
+        .problem-list li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Problemática</h1>
+            <p class="subtitle">Desconexão entre Clientes e Profissionais</p>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="content">
+            <div class="problem">
+                <div class="problem-header">
+                    <div class="problem-number">1</div>
+                    <div class="problem-title">Falta de Plataforma Centralizada</div>
+                </div>
+                <ul class="problem-list">
+                    <li>• Clientes buscam profissionais manualmente</li>
+                    <li>• Múltiplos canais de comunicação</li>
+                    <li>• Dificuldade em comparar preços</li>
+                </ul>
+            </div>
+            
+            <div class="problem">
+                <div class="problem-header">
+                    <div class="problem-number">2</div>
+                    <div class="problem-title">Falta de Confiança</div>
+                </div>
+                <ul class="problem-list">
+                    <li>• Sem histórico ou avaliações públicas</li>
+                    <li>• Risco de fraude ou má qualidade</li>
+                    <li>• Sem garantia de pagamento seguro</li>
+                </ul>
+            </div>
+            
+            <div class="problem">
+                <div class="problem-header">
+                    <div class="problem-number">3</div>
+                    <div class="problem-title">Ineficiência Operacional</div>
+                </div>
+                <ul class="problem-list">
+                    <li>• Profissionais perdem oportunidades</li>
+                    <li>• Clientes gastam horas procurando</li>
+                    <li>• Sem comunicação integrada</li>
+                </ul>
+            </div>
+            
+            <div class="problem">
+                <div class="problem-header">
+                    <div class="problem-number">4</div>
+                    <div class="problem-title">Falta de Rastreabilidade</div>
+                </div>
+                <ul class="problem-list">
+                    <li>• Sem registro formal de serviços</li>
+                    <li>• Dificuldade em resolver disputas</li>
+                    <li>• Sem histórico de manutenção</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

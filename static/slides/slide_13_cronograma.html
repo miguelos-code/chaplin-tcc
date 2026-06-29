@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma de Desenvolvimento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 80px;
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            font-weight: 400;
+            color: #1F1F1F;
+            margin-bottom: 15px;
+        }
+        
+        .divider {
+            width: 120px;
+            height: 8px;
+            background: #FF3D00;
+            margin-bottom: 25px;
+        }
+        
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #000000;
+            z-index: 0;
+        }
+        
+        .week {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .week-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background: #FF3D00;
+            width: 50px;
+            height: 50px;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #000000;
+            margin: 0 auto;
+        }
+        
+        .week-content {
+            background: #F5F5F5;
+            border: 2px solid #000000;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .week-phase {
+            font-size: 14px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 6px;
+        }
+        
+        .week-activities {
+            font-size: 12px;
+            color: #1F1F1F;
+            line-height: 1.4;
+        }
+        
+        .milestones {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 4px solid #000000;
+        }
+        
+        .milestones-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        
+        .milestone-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .milestone-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .milestone-check {
+            font-size: 24px;
+            color: #4CAF50;
+            font-weight: 700;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .milestone-text {
+            font-size: 14px;
+            color: #1F1F1F;
+            line-height: 1.5;
+        }
+        
+        .team-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #FF3D00;
+            font-size: 13px;
+            color: #1F1F1F;
+        }
+        
+        .team-info strong {
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Cronograma de Desenvolvimento</h1>
+            <p class="subtitle">Plano de 6-8 Semanas para MVP</p>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="timeline">
+            <div class="week">
+                <div class="week-number">1</div>
+                <div class="week-content">
+                    <div class="week-phase">Setup</div>
+                    <div class="week-activities">Docker, Backend inicial, Frontend inicial</div>
+                </div>
+            </div>
+            
+            <div class="week">
+                <div class="week-number">2-3</div>
+                <div class="week-content">
+                    <div class="week-phase">Backend Core</div>
+                    <div class="week-activities">Autenticação, Schema DB, Routers tRPC</div>
+                </div>
+            </div>
+            
+            <div class="week">
+                <div class="week-number">4</div>
+                <div class="week-content">
+                    <div class="week-phase">Frontend Core</div>
+                    <div class="week-activities">Páginas principais, Integração tRPC</div>
+                </div>
+            </div>
+            
+            <div class="week">
+                <div class="week-number">5</div>
+                <div class="week-content">
+                    <div class="week-phase">Features</div>
+                    <div class="week-activities">Chat, Bids, Stripe</div>
+                </div>
+            </div>
+            
+            <div class="week">
+                <div class="week-number">6</div>
+                <div class="week-content">
+                    <div class="week-phase">Polish</div>
+                    <div class="week-activities">Testes, Otimizações</div>
+                </div>
+            </div>
+            
+            <div class="week">
+                <div class="week-number">7-8</div>
+                <div class="week-content">
+                    <div class="week-phase">Deploy</div>
+                    <div class="week-activities">Produção, Monitoramento</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="milestones">
+            <h2 class="milestones-title">Milestones Principais</h2>
+            <div class="milestone-list">
+                <div class="milestone-item">
+                    <div class="milestone-check">✓</div>
+                    <div class="milestone-text"><strong>Semana 1:</strong> Ambiente pronto (Docker, repositório, estrutura)</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-check">✓</div>
+                    <div class="milestone-text"><strong>Semana 3:</strong> MVP backend (autenticação, tarefas, propostas)</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-check">✓</div>
+                    <div class="milestone-text"><strong>Semana 4:</strong> MVP frontend (páginas, integração tRPC)</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-check">✓</div>
+                    <div class="milestone-text"><strong>Semana 6:</strong> Testes completos (unitários, E2E, integração)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="team-info">
+            <strong>Equipe Estimada:</strong> 2-3 desenvolvedores | <strong>Metodologia:</strong> Agile/Scrum | <strong>Sprints:</strong> 2 semanas cada
+        </div>
+    </div>
+</body>
+</html>

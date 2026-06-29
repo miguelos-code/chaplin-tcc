@@ -1,0 +1,229 @@
+{% extends "shared/base_dashboard.html" %}
+{% block title %}{{ task.title }} - Chaplin{% endblock %}
+{% block content %}
+<div class="p-6 md:p-8">
+    <div class="mb-8">
+        <a href="{% url 'tasks:list' %}" class="text-orange-500 hover:text-orange-600 font-semibold mb-4 inline-block">← Voltar</a>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">{{ task.title }}</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Criada em {{ task.created_at|date:"d/m/Y" }}</p>
+    </div>
+
+    
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="md:col-span-2">
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Descrição</h2>
+                <p class="text-gray-700 dark:text-gray-300">{{ task.description }}</p>
+            </div>
+
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Evidências</h2>
+                {% if evidences %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for evidence in evidences %}
+                    <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                        {% if evidence.photo %}
+                        <img src="{{ evidence.photo.url }}" alt="Evidência" 
+                             class="w-full h-40 object-cover rounded-lg mb-3 cursor-pointer hover:opacity-80 transition"
+                             onclick="openLightbox('{{ evidence.photo.url }}')">
+                        {% else %}
+                        <div class="w-full h-40 bg-gray-100 flex items-center justify-center rounded-lg mb-3">
+                            <span class="text-gray-400 text-sm">Sem foto de evidência</span>
+                        </div>
+                        {% endif %}
+                        <p class="text-sm text-gray-600 dark:text-gray-300">{{ evidence.description }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ evidence.created_at|date:"d/m/Y H:i" }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-gray-600 dark:text-gray-400">Nenhuma evidência adicionada ainda</p>
+                {% endif %}
+            </div>
+
+            
+            <div id="lightbox-modal" class="hidden fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-4" onclick="closeLightbox(event)">
+                <button onclick="closeLightbox(event)" class="absolute top-4 right-4 text-white hover:text-orange-400 transition z-50" title="Fechar">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <img id="lightbox-img" src="" alt="Evidência ampliada" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl object-contain">
+            </div>
+
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Comunicação</h2>
+                {% if task_messages %}
+                <div class="space-y-4 mb-6">
+                    {% for msg in task_messages %}
+                    <div class="border-l-4 border-orange-500 pl-4 py-2">
+                        <p class="font-semibold text-gray-900 dark:text-white">{{ msg.sender.first_name|default:msg.sender.username }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 opacity-90">{{ msg.created_at|date:"d/m/Y H:i" }}</p>
+                        <p class="text-gray-700 dark:text-gray-100 mt-2">{{ msg.content }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <form method="post" action="{% url 'tasks:add_message' task.pk %}">
+                    {% csrf_token %}
+                    <textarea name="content" placeholder="Adicionar comentário..." rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent mb-4 dark:bg-gray-700 dark:text-white"></textarea>
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition">
+                        Enviar
+                    </button>
+                </form>
+            </div>
+
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Ações</h3>
+                <div class="space-y-2">
+                    {% if can_manage %}
+                    {% if task.status != 'finalizada' %}
+                    <a href="{% url 'tasks:edit' task.pk %}" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white font-semibold py-2 px-4 rounded-lg transition">
+                        Editar Tarefa
+                    </a>
+                    {% endif %}
+                    {% if task.status != 'concluida' and task.status != 'finalizada' %}
+                    <a href="{% url 'tasks:assign' task.pk %}" class="block w-full text-center bg-orange-100 hover:bg-orange-200 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 dark:hover:bg-orange-900/50 font-semibold py-2 px-4 rounded-lg transition">
+                        Alocar Responsável
+                    </a>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if task.status == 'alocada' or can_manage %}
+                    {% if task.status != 'concluida' and task.status != 'finalizada' %}
+                    <a href="{% url 'tasks:complete' task.pk %}" class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition">
+                        Marcar como Concluída
+                    </a>
+                    {% endif %}
+                    {% if can_manage %}
+                    {% if task.status == 'concluida' %}
+                    <form method="POST" action="{% url 'tasks:finalize' task.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="block w-full text-center bg-gray-900 hover:bg-black text-white dark:bg-gray-700 dark:hover:bg-gray-600 font-semibold py-2 px-4 rounded-lg transition">
+                            ✓ Aprovar e Finalizar
+                        </button>
+                    </form>
+                    {% endif %}
+                    {% if task.status != 'finalizada' %}
+                    <a href="{% url 'tasks:delete' task.pk %}" class="block w-full text-center bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 font-semibold py-2 px-4 rounded-lg transition">
+                        Excluir Tarefa
+                    </a>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+
+                    {% if not can_manage and task.status == 'aberta' %}
+                    <p class="text-xs text-gray-400 text-center">Aguardando alocação pelo gestor.</p>
+                    {% endif %}
+
+                    {% if task.status == 'finalizada' %}
+                    <p class="text-xs text-green-600 dark:text-green-400 text-center font-medium">✓ Esta tarefa foi finalizada e aprovada.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="md:col-span-1 flex flex-col h-full">
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Status</h3>
+                <span class="px-3 py-1 rounded-full text-sm font-semibold {% if task.status == 'aberta' %}bg-yellow-100 text-yellow-800{% elif task.status == 'alocada' %}bg-blue-100 text-blue-800{% elif task.status == 'concluida' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {{ task.get_status_display }}
+                </span>
+            </div>
+
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Prioridade</h3>
+                <span class="px-3 py-1 rounded-full text-sm font-semibold {% if task.priority == 'urgente' %}bg-red-100 text-red-800{% elif task.priority == 'alta' %}bg-orange-100 text-orange-800{% elif task.priority == 'normal' %}bg-blue-100 text-blue-800{% else %}bg-green-100 text-green-800{% endif %}">
+                    {{ task.get_priority_display }}
+                </span>
+            </div>
+
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex-grow mb-6 md:mb-0 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Informações</h3>
+                <div class="space-y-3">
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Criado por</p>
+                        <p class="font-semibold text-gray-900 dark:text-white">{{ task.created_by.first_name|default:task.created_by.username }}</p>
+                    </div>
+                    {% if task.assigned_to %}
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Alocado para</p>
+                        <p class="font-semibold text-gray-900 dark:text-white">{{ task.assigned_to.first_name|default:task.assigned_to.username }}</p>
+                    </div>
+                    {% endif %}
+                    {% if task.assigned_leader %}
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Líder Responsável</p>
+                        <p class="font-semibold text-gray-900 dark:text-white">{{ task.assigned_leader.first_name|default:task.assigned_leader.username }}</p>
+                    </div>
+                    {% endif %}
+            {% if task.location or task.endereco_completo %}
+                     <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Localização</p>
+                        {% if task.location %}
+                        <p class="font-semibold text-gray-900 dark:text-white">{{ task.location }}</p>
+                        {% endif %}
+                        {% if task.endereco_completo %}
+                        <div class="mt-1 text-sm text-gray-700 dark:text-gray-300 space-y-0.5">
+                            {% if task.logradouro %}
+                            <p>{{ task.logradouro }}{% if task.numero %}, {{ task.numero }}{% endif %}{% if task.complemento %} — {{ task.complemento }}{% endif %}</p>
+                            {% endif %}
+                            {% if task.bairro %}<p class="text-gray-500 dark:text-gray-400">{{ task.bairro }}</p>{% endif %}
+                            {% if task.cidade %}<p class="text-gray-500 dark:text-gray-400">{{ task.cidade }}{% if task.estado %} - {{ task.estado }}{% endif %}</p>{% endif %}
+                            {% if task.cep %}<p class="text-gray-400 dark:text-gray-500 text-xs">CEP {{ task.cep }}</p>{% endif %}
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ task.endereco_completo|urlencode }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-xs text-orange-500 hover:text-orange-600 mt-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                Ver no Google Maps
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if task.due_date %}
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Data de Vencimento</p>
+                        <p class="font-semibold text-gray-900 dark:text-white">{{ task.due_date|date:"d/m/Y" }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function openLightbox(url) {
+        const modal = document.getElementById('lightbox-modal');
+        const img = document.getElementById('lightbox-img');
+        img.src = url;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e) {
+        // Não fechar se clicou na imagem em si
+        if (e && e.target && e.target.id === 'lightbox-img') return;
+        const modal = document.getElementById('lightbox-modal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    // Fechar com ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox(e);
+        }
+    });
+</script>
+{% endblock %}

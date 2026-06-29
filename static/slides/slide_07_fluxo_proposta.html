@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo: Fazer Proposta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 60px;
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 15px;
+        }
+        
+        .divider {
+            width: 100px;
+            height: 6px;
+            background: #FF3D00;
+            margin-bottom: 30px;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            flex: 1;
+            justify-content: space-around;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            height: 70px;
+        }
+        
+        .step-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background: #FF3D00;
+            width: 50px;
+            height: 50px;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 3px solid #000000;
+        }
+        
+        .step-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #000000;
+        }
+        
+        .step-description {
+            font-size: 13px;
+            font-weight: 400;
+            color: #1F1F1F;
+        }
+        
+        .step-action {
+            background: #FFFFFF;
+            border: 3px solid #000000;
+            padding: 12px 16px;
+        }
+        
+        .step-decision {
+            background: #2962FF;
+            border: 3px solid #000000;
+            padding: 12px 16px;
+        }
+        
+        .step-decision .step-title {
+            color: #FFFFFF;
+        }
+        
+        .step-decision .step-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .connector {
+            width: 3px;
+            height: 20px;
+            background: #000000;
+            margin-left: 24px;
+            margin-top: -10px;
+            margin-bottom: -10px;
+        }
+        
+        .flow-row {
+            display: flex;
+            gap: 15px;
+            align-items: stretch;
+            margin-bottom: 10px;
+        }
+        
+        .flow-row.decision {
+            margin-bottom: 15px;
+        }
+        
+        .flow-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .flow-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Fluxo: Fazer Proposta</h1>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="flowchart">
+            <div class="flow-step step-action">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Visualizar Tarefas</div>
+                    <div class="step-description">Profissional acessa lista de tarefas abertas</div>
+                </div>
+            </div>
+            
+            <div class="connector"></div>
+            
+            <div class="flow-step step-action">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Selecionar Tarefa</div>
+                    <div class="step-description">Clica em tarefa interessante para ver detalhes</div>
+                </div>
+            </div>
+            
+            <div class="connector"></div>
+            
+            <div class="flow-step step-action">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Preencher Proposta</div>
+                    <div class="step-description">Define valor, descrição e tempo estimado</div>
+                </div>
+            </div>
+            
+            <div class="connector"></div>
+            
+            <div class="flow-step step-decision">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Já fez proposta?</div>
+                    <div class="step-description">Sistema valida se há proposta duplicada</div>
+                </div>
+            </div>
+            
+            <div class="connector"></div>
+            
+            <div class="flow-step step-action">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Confirmar Proposta</div>
+                    <div class="step-description">Revisa informações antes de enviar</div>
+                </div>
+            </div>
+            
+            <div class="connector"></div>
+            
+            <div class="flow-step step-action">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <div class="step-title">Enviar Proposta</div>
+                    <div class="step-description">Proposta salva como PENDENTE no sistema</div>
+                </div>
+            </div>
+            
+            <div class="connector"></div>
+            
+            <div class="flow-step step-action">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <div class="step-title">Notificar Cliente</div>
+                    <div class="step-description">Cliente recebe notificação de nova proposta</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

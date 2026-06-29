@@ -1,0 +1,97 @@
+<div class="hidden md:block bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700">
+    <table class="w-full">
+        <thead class="bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Título</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Status</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Prioridade</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Responsável</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Vencimento</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Ações</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+            {% for task in tasks %}
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer" onclick="window.location.href='{% url 'tasks:detail' task.pk %}'">
+                <td class="px-6 py-4">
+                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ task.title }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-xs">{{ task.description|truncatewords:10 }}</div>
+                </td>
+                <td class="px-6 py-4 text-sm">
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold
+                        {% if task.status == 'aberta' %} bg-green-100 text-green-800
+                        {% elif task.status == 'alocada' %} bg-blue-100 text-blue-800
+                        {% elif task.status == 'concluida' %} bg-gray-100 text-gray-800
+                        {% elif task.status == 'finalizada' %} bg-purple-100 text-purple-800
+                        {% endif %}">
+                        {{ task.get_status_display }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-sm">
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold
+                        {% if task.priority == 'baixa' %} bg-blue-100 text-blue-800
+                        {% elif task.priority == 'normal' %} bg-green-100 text-green-800
+                        {% elif task.priority == 'alta' %} bg-orange-100 text-orange-800
+                        {% elif task.priority == 'urgente' %} bg-red-100 text-red-800
+                        {% endif %}">
+                        {{ task.get_priority_display }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                    {% if task.assigned_to %}{{ task.assigned_to.get_full_name|default:task.assigned_to.username }}{% else %}Não Alocada{% endif %}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                    {{ task.due_date|date:"d/m/Y"|default:"-" }}
+                </td>
+                <td class="px-6 py-4 text-sm">
+                    <a href="{% url 'tasks:detail' task.pk %}" class="text-orange-500 hover:text-orange-600 font-semibold">Acessar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">Nenhuma tarefa encontrada com os filtros selecionados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div class="md:hidden space-y-4 mt-4">
+    {% for task in tasks %}
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition border border-gray-200 dark:border-gray-700" onclick="window.location.href='{% url 'tasks:detail' task.pk %}'">
+        <div class="flex justify-between items-start mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white border-b dark:border-gray-700 pb-2 mb-2">{{ task.title }}</h3>
+            <span class="inline-block px-2 py-1 rounded text-xs font-semibold
+                {% if task.status == 'aberta' %} bg-green-100 text-green-800
+                {% elif task.status == 'alocada' %} bg-blue-100 text-blue-800
+                {% elif task.status == 'concluida' %} bg-gray-100 text-gray-800
+                {% elif task.status == 'finalizada' %} bg-purple-100 text-purple-800
+                {% endif %}">
+                {{ task.get_status_display }}
+            </span>
+        </div>
+        <div class="space-y-2 mb-4">
+            <p class="text-sm text-gray-600 dark:text-gray-400"><strong class="dark:text-gray-300">Responsável:</strong> {% if task.assigned_to %}{{ task.assigned_to.get_full_name|default:task.assigned_to.username }}{% else %}Não Alocada{% endif %}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400"><strong class="dark:text-gray-300">Vencimento:</strong> {{ task.due_date|date:"d/m/Y"|default:"-" }}</p>
+            <p class="text-sm">
+                <span class="inline-block px-2 py-1 rounded text-xs font-semibold
+                    {% if task.priority == 'baixa' %} bg-blue-100 text-blue-800
+                    {% elif task.priority == 'normal' %} bg-green-100 text-green-800
+                    {% elif task.priority == 'alta' %} bg-orange-100 text-orange-800
+                    {% elif task.priority == 'urgente' %} bg-red-100 text-red-800
+                    {% endif %}">
+                    {{ task.get_priority_display }}
+                </span>
+            </p>
+        </div>
+        <div class="flex gap-2 w-full mt-4">
+            <a href="{% url 'tasks:detail' task.pk %}" class="w-full text-center bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 font-semibold py-2 rounded transition">Acessar Tarefa</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700">
+        Nenhuma tarefa encontrada.
+    </div>
+    {% endfor %}
+</div>

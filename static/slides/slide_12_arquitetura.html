@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitetura Técnica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 80px;
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        
+        .divider {
+            width: 120px;
+            height: 8px;
+            background: #FF3D00;
+            margin-bottom: 30px;
+        }
+        
+        .architecture {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            flex: 1;
+            justify-content: space-around;
+        }
+        
+        .layer {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #000000;
+        }
+        
+        .layer:last-child {
+            border-bottom: none;
+        }
+        
+        .layer-icon {
+            font-size: 40px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .layer-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .layer-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000000;
+        }
+        
+        .layer-techs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px 20px;
+            font-size: 13px;
+            color: #1F1F1F;
+        }
+        
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tech-bullet {
+            color: #FF3D00;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .tech-name {
+            font-weight: 600;
+            color: #000000;
+        }
+        
+        .tech-version {
+            font-size: 12px;
+            color: #2962FF;
+        }
+        
+        .arrow-down {
+            text-align: center;
+            font-size: 20px;
+            color: #FF3D00;
+            font-weight: 700;
+            padding: 0;
+            margin: -8px 0;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Arquitetura Técnica</h1>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="architecture">
+            <div class="layer">
+                <div class="layer-icon">🖥️</div>
+                <div class="layer-content">
+                    <div class="layer-title">Frontend (Cliente)</div>
+                    <div class="layer-techs">
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">React</span> <span class="tech-version">19</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">TypeScript</span> <span class="tech-version">5.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Tailwind CSS</span> <span class="tech-version">4</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Vite</span> <span class="tech-version">5.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">TanStack Query</span> <span class="tech-version">5.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Socket.io Client</span> <span class="tech-version">4.x</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow-down">↓ HTTPS + WebSocket</div>
+            
+            <div class="layer">
+                <div class="layer-icon">⚙️</div>
+                <div class="layer-content">
+                    <div class="layer-title">Backend (Servidor)</div>
+                    <div class="layer-techs">
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Node.js</span> <span class="tech-version">20.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Express</span> <span class="tech-version">4.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">TypeScript</span> <span class="tech-version">5.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">tRPC</span> <span class="tech-version">11.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Drizzle ORM</span> <span class="tech-version">0.44.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Socket.io</span> <span class="tech-version">4.x</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow-down">↓ Queries & Mutations</div>
+            
+            <div class="layer">
+                <div class="layer-icon">💾</div>
+                <div class="layer-content">
+                    <div class="layer-title">Banco de Dados</div>
+                    <div class="layer-techs">
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">MySQL</span> <span class="tech-version">8.0</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Redis</span> <span class="tech-version">7.x</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Migrations</span> <span class="tech-version">Drizzle</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow-down">↓ Integrações</div>
+            
+            <div class="layer">
+                <div class="layer-icon">🔗</div>
+                <div class="layer-content">
+                    <div class="layer-title">Serviços Externos</div>
+                    <div class="layer-techs">
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Stripe</span> <span class="tech-version">Pagamentos</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">SendGrid</span> <span class="tech-version">Emails</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">AWS S3</span> <span class="tech-version">Imagens</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Twilio</span> <span class="tech-version">SMS</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">Docker</span> <span class="tech-version">Containerização</span></span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-bullet">•</span>
+                            <span><span class="tech-name">GitHub Actions</span> <span class="tech-version">CI/CD</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+TRECHOS DE CÓDIGO PARA O DOCUMENTO DO TCC
+-------------------------------------------------------------------------------
+Aqui estão as três partes mais importantes do sistema que, juntas, explicam perfeitamente o Escopo do Projeto Chaplin: o que ele guarda (Dados), como ele processa (Lógica de Negócio) e quem tem acesso (Hierarquia de Usuários).
+
+
+1. A Base de Dados Principal: O Modelo de Tarefas
+-------------------------------------------------------------------------------
+Onde fica: apps/tasks/models.py
+
+Explicação: Este trecho de código mostra exatamente o que é uma "Ordem de Serviço" no sistema. Ele demonstra os diferentes status e prioridades que a tarefa pode assumir, além de registrar quem criou, quem vai executar e os prazos.
+
+```python
+class Task(models.Model):
+    PRIORITY_CHOICES = [
+        ('baixa', 'Baixa'),
+        ('normal', 'Normal'),
+        ('alta', 'Alta'),
+        ('urgente', 'Urgente'),
+    ]
+    STATUS_CHOICES = [
+        ('aberta', 'Aberta'),
+        ('alocada', 'Alocada'),
+        ('concluida', 'Concluída'),
+        ('finalizada', 'Finalizada'),
+    ]
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='normal')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='aberta')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='tasks_created')
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks_assigned')
+    due_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    location = models.CharField(max_length=200, blank=True, verbose_name='Local / Setor')
+```
+
+
+2. A Lógica de Negócio: Fluxo de Conclusão com Evidência
+-------------------------------------------------------------------------------
+Onde fica: apps/tasks/views.py
+
+Explicação: Este código é o coração do fluxo de trabalho. Ele mostra o que acontece nos bastidores quando um colaborador conclui uma tarefa: o sistema recebe a foto de evidência, salva no banco, altera o status da tarefa para 'concluida' e, de forma autônoma, dispara uma notificação para o gestor que a criou.
+
+```python
+@login_required
+def complete_task_view(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    
+    if request.method == 'POST':
+        description = request.POST.get('description', '')
+        photo = request.FILES.get('photo')
+        
+        # 1. Salva a Evidência Fotográfica
+        evidence = TaskEvidence(task=task, description=description)
+        if photo:
+            evidence.photo = photo
+        evidence.save()
+        
+        # 2. Atualiza o Status da Tarefa
+        task.status = 'concluida'
+        task.completed_at = timezone.now()
+        task.save()
+        
+        # 3. Dispara a Notificação Automática
+        if task.created_by and task.created_by_id != request.user.id:
+            _notify(task.created_by,
+                    f'Tarefa concluída: {task.title}',
+                    mensagem=f'Concluída por {request.user.get_full_name() or request.user.username}.',
+                    tipo='tarefa_concluida', task=task)
+                    
+        return redirect('tasks:detail', pk=task.pk)
+```
+
+
+3. Controle de Acesso: A Hierarquia de Usuários
+-------------------------------------------------------------------------------
+Onde fica: apps/users/models.py
+
+Explicação: Para gerenciar um prédio, é preciso ter níveis diferentes de acesso. Este trecho mostra a entidade UserProfile, que estende o usuário padrão e adiciona a regra de negócios essencial: os Níveis de Permissão (Admin, Gestor, Líder, Colaborador), garantindo que cada um veja apenas o que lhe compete.
+
+```python
+class UserProfile(models.Model):
+    ROLE_CHOICES = [
+        ('admin', 'Administrador'),
+        ('gestor', 'Gestor do Prédio'),
+        ('lider', 'Líder de Equipe'),
+        ('colaborador', 'Colaborador'),
+    ]
+    
+    # Relação "Um para Um" com o Usuário de Autenticação Padrão
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    
+    # Nível de Acesso no Sistema Chaplin
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='colaborador')
+    
+    # Relacionamento com a área de atuação do prestador
+    especialidade = models.ForeignKey(Especialidade, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    phone = models.CharField(max_length=20, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+```

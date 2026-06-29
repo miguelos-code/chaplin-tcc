@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo: Publicar Tarefa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #FFFFFF;
+            padding-top: 60px; /* manter o padding superior do título */
+            padding-left: 80px;
+            padding-right: 80px;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 20px; /* reduz 10px */
+        }
+        
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 12px; /* reduz 3px */
+        }
+        
+        .divider {
+            width: 100px;
+            height: 6px;
+            background: #FF3D00;
+            margin-bottom: 16px; /* reduz 9px */
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .flow-section {
+            display: flex;
+            flex-direction: column;
+            gap: 4px; /* reduz de 8px para 4px */
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-height: 50px; /* mantém consistência visual */
+        }
+        
+        .step-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background: #FF3D00;
+            width: 40px;
+            height: 40px;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 2px solid #000000;
+        }
+        
+        .step-content {
+            flex: 1;
+            border: 1px solid #000000; /* reduz 1px em cada lado */
+            padding: 8px 14px; /* reduz de 12px para 8px vertical */
+            background: #FFFFFF;
+        }
+        
+        .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #000000;
+        }
+        
+        .step-description {
+            font-size: 12px;
+            color: #1F1F1F;
+            margin-top: 2px; /* reduz 2px */
+        }
+        
+        .decision-box {
+            border: 2px solid #000000; /* reduz de 3px para 2px */
+            background: #FFFFFF;
+            padding: 8px 12px; /* reduz de 12px para 8px vertical */
+            position: relative;
+            transform: rotate(0deg);
+            flex: 1;
+        }
+        
+        .success-path {
+            color: #4CAF50;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        
+        .error-path {
+            color: #F44336;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        
+        .timing {
+            font-size: 12px;
+            color: #2962FF;
+            font-weight: 700;
+            margin-top: 4px; /* reduz 4px de espaçamento extra */
+            padding-top: 6px; /* reduz 2px */
+            border-top: 2px solid #2962FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="title">Fluxo: Publicar Tarefa</h1>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="flowchart">
+            <div class="flow-section">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Autenticação</div>
+                        <div class="step-description">Cliente faz login no sistema</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Acesso ao Formulário</div>
+                        <div class="step-description">Clica em "Nova Tarefa"</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Preenchimento</div>
+                        <div class="step-description">Insere: título, descrição, categoria, orçamento, data, localização, fotos</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">?</div>
+                    <div class="decision-box">
+                        <div class="step-title">Todos os campos obrigatórios preenchidos?</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 20px; align-items: center; margin-left: 55px;">
+                    <div class="error-path">NÃO → Exibe Erro</div>
+                    <div style="flex: 1; border-bottom: 2px dashed #F44336;"></div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Publicação</div>
+                        <div class="step-description">Tarefa é salva como "ABERTA"</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Notificação</div>
+                        <div class="step-description">Sistema busca profissionais relevantes e envia notificações</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <div class="step-title">Confirmação</div>
+                        <div class="step-description">Cliente vê confirmação e acessa detalhes da tarefa</div>
+                    </div>
+                </div>
+                
+                <div class="timing">⏱️ Tempo Médio: 3-5 minutos | ✓ Resultado: Tarefa visível para profissionais</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

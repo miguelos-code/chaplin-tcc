@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Verificar E-mail - Chaplin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg text-center">
+        <div>
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-orange-100 mb-4">
+                <svg class="h-8 w-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900">Verifique seu E-mail</h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Enviamos um código de segurança de 6 dígitos para <br>
+                <strong class="text-gray-900">{{ email }}</strong>
+            </p>
+        </div>
+
+        <form method="post" class="mt-8 space-y-6">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded mb-4 text-sm">
+                    Código inválido! Tente novamente.
+                </div>
+            {% endif %}
+
+            
+
+            <div>
+                <label for="{{ form.code.id_for_label }}" class="sr-only">Código de Segurança</label>
+                {{ form.code }}
+            </div>
+
+            <button type="submit" class="w-full bg-orange-500 text-white hover:bg-orange-600 font-bold py-3 px-4 rounded-lg transition duration-200">
+                Ativar Conta
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-500">
+            Não recebeu o e-mail? Verifique sua caixa de spam ou <a href="{% url 'users:register' %}" class="text-orange-500 hover:text-orange-600 font-medium">tente se cadastrar novamente</a>.
+        </p>
+    </div>
+</div>
+{% endblock %}
