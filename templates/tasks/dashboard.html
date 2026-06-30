@@ -12,7 +12,7 @@
     </div>
 
     
-    <div class="grid grid-cols-1 md:grid-cols-2 {% if user.profile.role != 'colaborador' %}lg:grid-cols-5{% else %}lg:grid-cols-4{% endif %} gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 {% if current_role != 'colaborador' %}lg:grid-cols-5{% else %}lg:grid-cols-4{% endif %} gap-6 mb-8">
         
         <a href="{% url 'tasks:list' %}" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow block cursor-pointer">
             <div class="flex items-center justify-between">
@@ -74,7 +74,7 @@
             </div>
         </a>
 
-        {% if user.profile.role != 'colaborador' %}
+        {% if current_role != 'colaborador' %}
         <a href="{% url 'tasks:list' %}?status=aberta" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow block cursor-pointer">
             <div class="flex items-center justify-between">
                 <div>
@@ -122,7 +122,7 @@
                 <svg class="w-12 h-12 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                 </svg>
-                {% if user.profile.role == 'colaborador' %}
+                {% if current_role == 'colaborador' %}
                 <p class="text-sm font-medium">Nenhuma tarefa atribuída a você ainda.</p>
                 <p class="text-xs text-gray-400 mt-1">Aguarde seu gestor alocar tarefas para você.</p>
                 {% else %}

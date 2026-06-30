@@ -1,6 +1,6 @@
-<div class="grid grid-cols-1 md:grid-cols-2 {% if user.profile.role != 'colaborador' %}xl:grid-cols-4{% else %}xl:grid-cols-3{% endif %} gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 {% if current_role != 'colaborador' %}xl:grid-cols-4{% else %}xl:grid-cols-3{% endif %} gap-6">
 
-        {% if user.profile.role != 'colaborador' %}
+        {% if current_role != 'colaborador' %}
         <div class="bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4 flex flex-col gap-3">
             <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center gap-2">

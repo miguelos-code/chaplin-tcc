@@ -5,6 +5,7 @@ from django.utils import timezone
 from .models import Task, TaskEvidence, Message, Notification
 from .forms import TaskForm
 from apps.users.models import UserProfile
+from apps.users.tab_session_utils import get_request_role
 from django.db.models import Q
 from django.contrib.auth.models import User as AuthUser
 from django.contrib import messages as django_messages
@@ -26,21 +27,33 @@ def _get_role(user):
     return getattr(getattr(user, 'profile', None), 'role', 'colaborador')
 
 
+def _get_request_role(request):
+    """Obtém role respeitando isolamento de abas"""
+    return get_request_role(request)
+
+
 def _is_manager(user):
     return _get_role(user) in ('admin', 'gestor', 'lider')
+
+def _is_manager_request(request):
+    """Verifica se é manager respeitando isolamento de abas"""
+    return _get_request_role(request) in ('admin', 'gestor', 'lider')
 
 @login_required
 def dashboard_view(request):
     if not hasattr(request.user, 'profile'):
         UserProfile.objects.create(user=request.user, role='admin' if request.user.is_superuser else 'colaborador')
-    user_profile = request.user.profile
-    if user_profile.role == 'gestor':
+    
+    # Usa role da aba, não do banco
+    role = _get_request_role(request)
+    
+    if role == 'gestor':
         tasks = Task.objects.filter(created_by=request.user)
-    elif user_profile.role == 'lider':
+    elif role == 'lider':
         tasks = Task.objects.filter(
             Q(assigned_to=request.user) | Q(assigned_leader=request.user)
         ).distinct()
-    elif user_profile.role == 'colaborador':
+    elif role == 'colaborador':
         tasks = Task.objects.filter(assigned_to=request.user)
     else:
         tasks = Task.objects.all()
@@ -60,14 +73,17 @@ def tasks_list_view(request):
     priority = request.GET.get('priority', '')
     search = request.GET.get('search', '')
     responsavel = request.GET.get('responsavel', '')
-    user_profile = getattr(request.user, 'profile', None)
-    if user_profile and user_profile.role == 'gestor':
+    
+    # Usa role da aba, não do banco
+    role = _get_request_role(request)
+    
+    if role == 'gestor':
         tasks = Task.objects.filter(created_by=request.user)
-    elif user_profile and user_profile.role == 'lider':
+    elif role == 'lider':
         tasks = Task.objects.filter(
             Q(assigned_to=request.user) | Q(assigned_leader=request.user)
         ).distinct()
-    elif user_profile and user_profile.role == 'colaborador':
+    elif role == 'colaborador':
         tasks = Task.objects.filter(assigned_to=request.user)
     else:
         tasks = Task.objects.all()
@@ -88,7 +104,7 @@ def tasks_list_view(request):
         'current_status': status,
         'current_priority': priority,
         'current_search': search,
-        'can_manage': _is_manager(request.user),
+        'can_manage': _is_manager_request(request),
     }
     if request.GET.get('ajax') == '1':
         return render(request, 'tasks/_list_table.html', context)
@@ -96,7 +112,7 @@ def tasks_list_view(request):
 
 @login_required
 def create_task_view(request):
-    if not _is_manager(request.user):
+    if not _is_manager_request(request):
         django_messages.error(request, 'Você não tem permissão para criar tarefas.')
         return redirect('tasks:list')
     if request.method == 'POST':
@@ -141,12 +157,12 @@ def task_detail_view(request, pk):
         'task': task,
         'task_messages': task_messages,
         'evidences': evidences,
-        'can_manage': _is_manager(request.user),
+        'can_manage': _is_manager_request(request),
     })
 
 @login_required
 def edit_task_view(request, pk):
-    if not _is_manager(request.user):
+    if not _is_manager_request(request):
         django_messages.error(request, 'Você não tem permissão para editar tarefas.')
         return redirect('tasks:detail', pk=pk)
     task = get_object_or_404(Task, pk=pk)
@@ -172,7 +188,7 @@ def edit_task_view(request, pk):
 
 @login_required
 def assign_task_view(request, pk):
-    if not _is_manager(request.user):
+    if not _is_manager_request(request):
         django_messages.error(request, 'Você não tem permissão para alocar tarefas.')
         return redirect('tasks:detail', pk=pk)
     
@@ -225,7 +241,7 @@ def assign_task_view(request, pk):
 @login_required
 def complete_task_view(request, pk):
     task = get_object_or_404(Task, pk=pk)
-    if not _is_manager(request.user) and task.assigned_to_id != request.user.id:
+    if not _is_manager_request(request) and task.assigned_to_id != request.user.id:
         django_messages.error(request, 'Você não tem permissão para concluir esta tarefa.')
         return redirect('tasks:list')
     if task.status in ('concluida', 'finalizada'):
@@ -291,7 +307,7 @@ def add_message_view(request, pk):
 
 @login_required
 def delete_task_view(request, pk):
-    if not _is_manager(request.user):
+    if not _is_manager_request(request):
         django_messages.error(request, 'Você não tem permissão para excluir tarefas.')
         return redirect('tasks:list')
     task = get_object_or_404(Task, pk=pk)
@@ -305,7 +321,7 @@ def delete_task_view(request, pk):
 
 @login_required
 def finalize_task_view(request, pk):
-    if not _is_manager(request.user):
+    if not _is_manager_request(request):
         django_messages.error(request, 'Você não tem permissão para finalizar tarefas.')
         return redirect('tasks:detail', pk=pk)
     task = get_object_or_404(Task, pk=pk)
@@ -424,15 +440,17 @@ def settings_view(request):
 def kanban_view(request):
     if not hasattr(request.user, 'profile'):
         UserProfile.objects.create(user=request.user, role='admin' if request.user.is_superuser else 'colaborador')
-    user_profile = request.user.profile
+    
+    # Usa role da aba, não do banco
+    role = _get_request_role(request)
 
-    if user_profile.role == 'gestor':
+    if role == 'gestor':
         all_tasks = Task.objects.filter(created_by=request.user)
-    elif user_profile.role == 'lider':
+    elif role == 'lider':
         all_tasks = Task.objects.filter(
             Q(assigned_to=request.user) | Q(assigned_leader=request.user)
         ).distinct()
-    elif user_profile.role == 'colaborador':
+    elif role == 'colaborador':
         all_tasks = Task.objects.filter(assigned_to=request.user)
     else:
         all_tasks = Task.objects.all()

@@ -45,7 +45,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Middlewares de isolamento de sessão por aba
     'apps.users.middleware.TabSessionMiddleware',
-    'apps.users.middleware.TabRolePreservationMiddleware',
 ]
 
 ROOT_URLCONF = 'chaplin_project.urls'
@@ -67,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.users.context_processors.tab_session_context',
             ],
         },
     },

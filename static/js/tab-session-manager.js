@@ -32,14 +32,23 @@ class TabSessionManager {
      * Registra uma nova aba no servidor
      */
     registerNewTab() {
-        fetch(`${this.apiBaseUrl}/register/`)
+        // Gera um tabId temporário localmente
+        const tempTabId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+        
+        sessionStorage.setItem('chaplin_tab_id', tempTabId);
+        this.tabId = tempTabId;
+        console.log('✓ Nova aba registrada localmente:', this.tabId.substring(0, 8));
+        
+        // Tenta registrar no servidor (não-crítico)
+        fetch(`${this.apiBaseUrl}/register/?tab_id=${tempTabId}`)
             .then(res => res.json())
             .then(data => {
-                this.tabId = data.tab_id;
-                sessionStorage.setItem('chaplin_tab_id', data.tab_id);
-                console.log('✓ Nova aba registrada:', this.tabId.substring(0, 8));
+                console.log('✓ Servidor confirmou registro de aba');
             })
-            .catch(err => console.error('Erro ao registrar aba:', err));
+            .catch(err => console.warn('⚠ Aviso ao registrar no servidor (não crítico):', err));
     }
 
     /**

@@ -28,13 +28,9 @@ def login_view(request):
         if user is not None:
             login(request, user)
             
-            # Cria/atualiza sessão de aba também
+            # Cria/atualiza sessão de aba usando o tabId do cliente
             role = 'admin' if user.is_superuser else (user.profile.role if hasattr(user, 'profile') else 'colaborador')
-            tab_id = request.session.get('_tab_id')
-            if not tab_id:
-                import uuid
-                tab_id = str(uuid.uuid4())
-                request.session['_tab_id'] = tab_id
+            tab_id = request.tab_id  # Vem do middleware
             
             create_tab_session(
                 tab_id=tab_id,
@@ -59,9 +55,8 @@ from django.views.decorators.http import require_POST
 def logout_view(request):
     # Invalida sessão de aba se existir
     from .tab_session_utils import invalidate_tab_session
-    tab_id = request.session.get('_tab_id')
-    if tab_id:
-        invalidate_tab_session(tab_id)
+    if hasattr(request, 'tab_id') and request.tab_id:
+        invalidate_tab_session(request.tab_id)
     
     logout(request)
     return redirect('core:index')

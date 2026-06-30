@@ -44,23 +44,20 @@ class TabSessionMiddleware(MiddlewareMixin):
                 if tab_session.is_expired():
                     tab_session.deactivate()
                     request.tab_session = None
-                    request.user = AnonymousUser()
                     return None
                 
                 # Atualiza last_activity
                 tab_session.extend_expiration()
                 request.tab_session = tab_session
                 
-                # Se há usuário associado, o usa
-                if tab_session.user and tab_session.user.is_active:
-                    # Cria um objeto usuário modificado com a role snapshot
-                    request.user = tab_session.user
-                    # Armazena a role_snapshot no request para uso posterior
-                    request.tab_role = tab_session.role_snapshot
+                # Armazena a role_snapshot no request para uso posterior
+                if tab_session.role_snapshot:
+                    request.tab_role_override = tab_session.role_snapshot
                 
             except TabSession.DoesNotExist:
                 # Primeira vez que vê este tabId
                 request.tab_session = None
+                request.tab_role_override = None
                 
         except Exception as e:
             # Se algo der errado, não quebra a aplicação
@@ -69,6 +66,7 @@ class TabSessionMiddleware(MiddlewareMixin):
             traceback.print_exc()
             request.tab_id = str(uuid.uuid4())
             request.tab_session = None
+            request.tab_role_override = None
         
         return None
     
@@ -87,55 +85,3 @@ class TabSessionMiddleware(MiddlewareMixin):
             print(f"Erro ao adicionar headers no TabSessionMiddleware: {e}")
         
         return response
-
-
-class TabRolePreservationMiddleware(MiddlewareMixin):
-    """
-    Middleware que preserva o role/perfil específico da aba.
-    
-    Garante que request.user.profile.role sempre retorna o valor 
-    correto para a aba específica, não o do banco de dados.
-    """
-    
-    def process_request(self, request):
-        """Preserva o role específico da aba"""
-        try:
-            if hasattr(request, 'tab_session') and request.tab_session:
-                if request.tab_session.role_snapshot:
-                    # Modifica temporariamente o profile para retornar o role snapshot
-                    if hasattr(request.user, 'profile'):
-                        # Armazena o role original
-                        if not hasattr(request.user, '_original_profile'):
-                            original_profile = request.user.profile
-                            request.user._original_profile = original_profile
-                            
-                            # Cria um proxy do profile com role sobrescrito
-                            class ProfileProxy:
-                                def __init__(self, original, role_override):
-                                    self._original = original
-                                    self._role_override = role_override
-                                
-                                @property
-                                def role(self):
-                                    return self._role_override
-                                
-                                def get_role_display(self):
-                                    choices = {
-                                        'admin': 'Administrador',
-                                        'gestor': 'Gestor do Prédio',
-                                        'lider': 'Líder de Equipe',
-                                        'colaborador': 'Colaborador',
-                                    }
-                                    return choices.get(self._role_override, self._role_override)
-                                
-                                def __getattr__(self, name):
-                                    return getattr(self._original, name)
-                            
-                            request.user.profile = ProfileProxy(
-                                original_profile, 
-                                request.tab_session.role_snapshot
-                            )
-        except Exception as e:
-            print(f"Erro no TabRolePreservationMiddleware: {e}")
-        
-        return None

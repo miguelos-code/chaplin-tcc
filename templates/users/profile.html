@@ -25,7 +25,9 @@
             
             <div>
                 <label class="block text-sm font-medium text-gray-700">Função</label>
-                <p class="mt-1 text-lg">{{ profile.get_role_display }}</p>
+                <p class="mt-1 text-lg">
+                    {% if current_role == 'admin' %}Administrador{% elif current_role == 'gestor' %}Gestor do Prédio{% elif current_role == 'lider' %}Líder de Equipe{% else %}Colaborador{% endif %}
+                </p>
             </div>
         </div>
     </div>
