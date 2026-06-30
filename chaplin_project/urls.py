@@ -19,4 +19,5 @@ from django.views.static import serve
 # Serve media files globally (Render production support)
 urlpatterns += [
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATICFILES_DIRS[0]}),
 ]
