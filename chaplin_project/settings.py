@@ -43,6 +43,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Middlewares de isolamento de sessão por aba
+    'apps.users.middleware.TabSessionMiddleware',
+    'apps.users.middleware.TabRolePreservationMiddleware',
 ]
 
 ROOT_URLCONF = 'chaplin_project.urls'

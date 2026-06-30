@@ -93,3 +93,7 @@ def auto_delete_avatar_on_delete(sender, instance, **kwargs):
     if instance.avatar:
         if os.path.isfile(instance.avatar.path):
             os.remove(instance.avatar.path)
+
+
+# Import modelos de sessão por aba
+from .models_tab_session import TabSession, TabSessionLog

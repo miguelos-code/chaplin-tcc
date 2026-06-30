@@ -5,10 +5,20 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import UserProfile, ActivityLog, Especialidade
 from .forms import UserRegistrationForm, AdminUserCreateForm
+from .tab_session_utils import create_tab_session
 from django.db.models import Q
 from django.core.paginator import Paginator
 from apps.tasks.views import _is_manager
 from django.utils.html import strip_tags
+
+def _get_client_ip(request):
+    """Extrai o IP do cliente da requisição"""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 def login_view(request):
     if request.method == 'POST':
@@ -17,6 +27,23 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            
+            # Cria/atualiza sessão de aba também
+            role = 'admin' if user.is_superuser else (user.profile.role if hasattr(user, 'profile') else 'colaborador')
+            tab_id = request.session.get('_tab_id')
+            if not tab_id:
+                import uuid
+                tab_id = str(uuid.uuid4())
+                request.session['_tab_id'] = tab_id
+            
+            create_tab_session(
+                tab_id=tab_id,
+                user=user,
+                role=role,
+                ip_address=_get_client_ip(request),
+                user_agent=request.META.get('HTTP_USER_AGENT', ''),
+            )
+            
             return redirect('tasks:dashboard')
         else:
             return render(request, 'users/login.html', {'error': 'Usuário ou senha inválidos. Tente novamente.'})
@@ -30,6 +57,12 @@ from django.views.decorators.http import require_POST
 
 @require_POST
 def logout_view(request):
+    # Invalida sessão de aba se existir
+    from .tab_session_utils import invalidate_tab_session
+    tab_id = request.session.get('_tab_id')
+    if tab_id:
+        invalidate_tab_session(tab_id)
+    
     logout(request)
     return redirect('core:index')
 
